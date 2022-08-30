@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+* {
+  background-color: rgb(161 161 170);
+  font-family: "Bookman Old Style", Georgia, serif;
+}
+
+a:link {
+  color: rgb(161 161 170);
+}

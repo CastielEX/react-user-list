@@ -1,6 +1,5 @@
 //This is one single row in Task list
 import React, { useState } from "react";
-import axios from "axios";
 
 const Task = ({ task }: any) => {
   const [checked, setChecked] = useState(task.completed);
