@@ -3,6 +3,9 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import TaskList from "../data/TaskList";
 import User from "../data/User";
+import { CompletionTriggerKind } from "typescript";
+import DropDown from "./DropDown";
+import FilterTaskList from "./DropDown";
 
 const Singlepage = ({ task }: any) => {
   const { id, userId } = useParams();
@@ -10,17 +13,10 @@ const Singlepage = ({ task }: any) => {
   const [theUserList, setUserList] = React.useState<any>([]);
   const [theTaskList, setTaskList] = React.useState<any>([]);
   const [searchTaskText, setTaskText] = useState("");
-  const [filtered, setFiltered] = useState(theTaskList);
   const [checked, setChecked] = useState(theTaskList.completed);
-
-  const todoFilter = (comStatus: boolean) => {
-    const updatedItems = theTaskList.filter(
-      (currentEl: { completed: boolean }) => {
-        return currentEl.completed === comStatus;
-      }
-    );
-    setFiltered(updatedItems);
-  };
+  const [filtered, setFiltered] = React.useState<any>([]);
+  const [selectedCompleted, setSelectedCompleted] = useState();
+  const [filterTextValue, setfilterTextValue] = useState("all");
 
   const userURL = `https://jsonplaceholder.typicode.com/users/${id}`;
   React.useEffect(() => {
@@ -34,6 +30,7 @@ const Singlepage = ({ task }: any) => {
   React.useEffect(() => {
     axios.get(taskURL).then((response) => {
       setTaskList(response.data);
+      setFiltered(response.data);
     });
   }, [taskURL, userId, id]);
 
@@ -47,8 +44,19 @@ const Singlepage = ({ task }: any) => {
     setChecked(array);
   };
 
-  console.log(handleOnChange);
-  console.log(setChecked);
+  function onFilterValueSelected(filterValue: any) {
+    setfilterTextValue(filterValue);
+  }
+
+  const filteredTaskList = result.filter((task: any) => {
+    if (filterTextValue === "true") {
+      return task.completed;
+    } else if (filterTextValue === "false") {
+      return !task.completed;
+    } else {
+      return task;
+    }
+  });
 
   return (
     <div>
@@ -69,26 +77,11 @@ const Singlepage = ({ task }: any) => {
         placeholder="Input Task Title..."
         className="px-3 py-3 mb-3 placeholder-slate-500 text-slate-500 bg-gray-300 relative rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full pr-10"
       />
-      {/*True/False checkbox*/}
-      <div className="container text-left mb-2">
-        <input type="checkbox" id="all" onClick={() => todoFilter(true)} />
-        <span>All tasks</span>
-        <br></br>
-        <input type="checkbox" id="onlydone" onClick={() => todoFilter(true)} />
-        <span>Only done task</span>
-        <br></br>
-        <input
-          type="checkbox"
-          id="onlyfalse"
-          onClick={() => todoFilter(false)}
-        />
-        <span>Only false task</span>
-      </div>
-      {/*///////////////////////////////*/}
+      <FilterTaskList filterValueSelected={onFilterValueSelected} />
 
       <div>
         <div>
-          {result
+          {filteredTaskList
             .filter((task: any) => {
               if (searchTaskText == "") {
                 return task;
@@ -106,9 +99,7 @@ const Singlepage = ({ task }: any) => {
                       key={id}
                       type="checkbox"
                       style={{ margin: "0 10px" }}
-                      // value={task.completed}
                       checked={task.completed}
-                      // defaultChecked={task.completed}
                       disabled={task.completed}
                       onClick={() => handleOnChange(task.id)}
                     />
