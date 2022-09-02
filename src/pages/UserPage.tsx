@@ -1,45 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import TaskList from "../data/TaskList";
-import User from "../data/User";
-import { CompletionTriggerKind } from "typescript";
-import DropDown from "./DropDown";
-import FilterTaskList from "./DropDown";
+import { getUsers } from "../Services/ServiceData";
+import { getTasks } from "../Services/ServiceData";
+// import ServiceData from "../Services/ServiceData";
 
-const Singlepage = ({ task }: any) => {
-  const { id, userId } = useParams();
-  const [newUser, setNewUser] = React.useState<any[]>([]);
-  const [theUserList, setUserList] = React.useState<any>([]);
-  const [theTaskList, setTaskList] = React.useState<any>([]);
-  const [searchTaskText, setTaskText] = useState("");
-  const [checked, setChecked] = useState(theTaskList.completed);
+import FilterTaskList from "../Components/DropDownList";
+// import getUsers from "../Services/ServiceData";
+// import getTasks from "../Services/ServiceData";
+
+function UserPage() {
+  const { id, userId, task } = useParams();
+  const [userList, setUserList] = React.useState<any>({});
+  const [taskList, setTaskList] = React.useState<any>([]);
   const [filtered, setFiltered] = React.useState<any>([]);
-  const [selectedCompleted, setSelectedCompleted] = useState();
+  const [searchTaskText, setTaskText] = useState("");
+  const [checked, setChecked] = useState(taskList.completed);
   const [filterTextValue, setfilterTextValue] = useState("all");
-
-  const userURL = `https://jsonplaceholder.typicode.com/users/${id}`;
-  React.useEffect(() => {
-    axios.get(userURL).then((response) => {
+  const [users] = useState([]);
+  useEffect(() => {
+    getUsers(id).then((response) => {
+      console.log(response.data);
       setUserList(response.data);
     });
-  }, [id, userURL]);
-
-  const taskURL = `https://jsonplaceholder.typicode.com/todos`;
-
-  React.useEffect(() => {
-    axios.get(taskURL).then((response) => {
+    getTasks().then((response) => {
+      console.log(response.data);
       setTaskList(response.data);
-      setFiltered(response.data);
     });
-  }, [taskURL, userId, id]);
+  }, []);
 
-  const result = theTaskList.filter(
-    (task: any) => task.userId === theUserList.id
-  );
+  const result = taskList.filter((task: any) => task.userId === userList.id);
 
   const handleOnChange = (id: any) => {
-    const array = [...theTaskList];
+    const array = [...taskList];
     array[array.findIndex((el) => el.id === id)].completed = true;
     setChecked(array);
   };
@@ -60,12 +53,12 @@ const Singlepage = ({ task }: any) => {
 
   return (
     <div>
-      {theUserList && (
+      {userList && (
         <>
           <h1>
-            {theUserList.id}
+            {userList?.id}
             {" - "}
-            {theUserList.name}
+            {userList?.name}
           </h1>
         </>
       )}
@@ -113,6 +106,6 @@ const Singlepage = ({ task }: any) => {
       </div>
     </div>
   );
-};
+}
 
-export default Singlepage;
+export default UserPage;

@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "./App.css";
-import Header from "./Header";
-import UserList from "./data/UserList";
-import { Container } from "react-bootstrap";
 import axios from "axios";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import ErrorPage from "./pages/ErrorPage";
-import Singlepage from "./pages/Singlepage";
+import { Container } from "react-bootstrap";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import "./App.css";
+import Header from "./Components/Header";
+import Home from "./Pages/HomePage";
+import About from "./Pages/AboutPage";
+import ErrorPage from "./Pages/ErrorPage";
+import AllUserList from "./Pages/AllUserList";
+import UserPage from "./Pages/UserPage";
 
 function App() {
-  const [theUserList, setUserList] = React.useState(null);
-  const [userDrop, setUserDrop] = useState(null);
-  const userURL = "https://jsonplaceholder.typicode.com/users";
+  const [userList, setUserList] = React.useState(null);
+
+  const usersURL = "https://jsonplaceholder.typicode.com/users";
   // Getting User Data
   React.useEffect(() => {
-    axios.get(userURL).then((response) => {
+    axios.get(usersURL).then((response) => {
       setUserList(response.data);
     });
   }, []);
-
-  if (!theUserList) return null;
+  // Sa pun axios get in file aparte Service
+  if (!userList) return null;
   //
 
   return (
@@ -36,12 +37,10 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route
                   path="/users"
-                  element={
-                    <UserList userDrop={userDrop} theUserList={theUserList} />
-                  }
+                  element={<AllUserList userList={userList} />}
                 />
                 <Route path="/about" element={<About />} />
-                <Route path="/users/:id" element={<Singlepage />} />
+                <Route path="/users/:id" element={<UserPage />} />
                 <Route path="*" element={<ErrorPage />} />
               </Routes>
             </div>
