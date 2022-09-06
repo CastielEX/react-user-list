@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { uid } from "uid";
+
+// import { db } from "../Services/firebase";
 import { getUsers } from "../Services/ServiceData";
 import { getTasks } from "../Services/ServiceData";
-// import ServiceData from "../Services/ServiceData";
-
 import FilterTaskList from "../Components/DropDownList";
-// import getUsers from "../Services/ServiceData";
-// import getTasks from "../Services/ServiceData";
-
+import { onValue } from "firebase/database";
+// Button that deletes all tasks from a user
 function UserPage() {
   const { id, userId, task } = useParams();
   const [userList, setUserList] = React.useState<any>({});
   const [taskList, setTaskList] = React.useState<any>([]);
-  const [filtered, setFiltered] = React.useState<any>([]);
   const [searchTaskText, setTaskText] = useState("");
   const [checked, setChecked] = useState(taskList.completed);
   const [filterTextValue, setfilterTextValue] = useState("all");
-  const [users] = useState([]);
+
+  //read from firebase
+  // useEffect(() => {
+  //   onValue(ref(db), snapshot => {
+  //     const data = snapshot.val();
+  //   })
+
+  // }, [])
+
   useEffect(() => {
     getUsers(id).then((response) => {
       console.log(response.data);
@@ -29,7 +36,7 @@ function UserPage() {
     });
   }, []);
 
-  const result = taskList.filter((task: any) => task.userId === userList.id);
+  const result = taskList.filter((task: any) => task?.userId === userList?.id);
 
   const handleOnChange = (id: any) => {
     const array = [...taskList];
@@ -43,9 +50,9 @@ function UserPage() {
 
   const filteredTaskList = result.filter((task: any) => {
     if (filterTextValue === "true") {
-      return task.completed;
+      return task?.completed;
     } else if (filterTextValue === "false") {
-      return !task.completed;
+      return !task?.completed;
     } else {
       return task;
     }
@@ -92,12 +99,12 @@ function UserPage() {
                       key={id}
                       type="checkbox"
                       style={{ margin: "0 10px" }}
-                      checked={task.completed}
-                      disabled={task.completed}
-                      onClick={() => handleOnChange(task.id)}
+                      checked={task?.completed}
+                      disabled={task?.completed}
+                      onClick={() => handleOnChange(task?.id)}
                     />
-                    {task.userId}
-                    {" - "} {task.title}
+                    {task?.userId}
+                    {" - "} {task?.title}
                   </div>
                 </div>
               );

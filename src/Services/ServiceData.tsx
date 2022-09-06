@@ -11,7 +11,7 @@ export const getTasks = () => {
 };
 
 // export const consoleIt = () => {
-//   console.log("Hello from Api");
+//   console.log("Hello from Services");
 // };
 
-export const Api = { getUsers, getTasks };
+export const Services = { getUsers, getTasks };

@@ -10,7 +10,7 @@ const FilterTaskList = ({ filterValueSelected }: any) => {
       value: "true",
     },
     {
-      title: "Only false tasks",
+      title: "Only in progress tasks",
       value: "false",
     },
   ];
