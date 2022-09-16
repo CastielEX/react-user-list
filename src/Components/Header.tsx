@@ -13,7 +13,6 @@ const Header = () => {
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/users">Users</Nav.Link>
             <Nav.Link href="/about">About</Nav.Link>
-            <Nav.Link href="/firebase">Firebase</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

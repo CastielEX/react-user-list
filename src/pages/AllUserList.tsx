@@ -10,13 +10,13 @@ const AllUserList = ({ userList }: any) => {
   const [taskList, setTaskList] = React.useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
 
-  const tasksURL = "https://jsonplaceholder.typicode.com/todos";
+  // const tasksURL = "https://jsonplaceholder.typicode.com/todos";
 
-  React.useEffect(() => {
-    axios.get(tasksURL).then((response) => {
-      setTaskList(response.data);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   axios.get(tasksURL).then((response) => {
+  //     setTaskList(response.data);
+  //   });
+  // }, []);
 
   return (
     <div>

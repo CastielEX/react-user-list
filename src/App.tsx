@@ -10,7 +10,6 @@ import About from "./Pages/AboutPage";
 import ErrorPage from "./Pages/ErrorPage";
 import AllUserList from "./Pages/AllUserList";
 import UserPage from "./Pages/UserPage";
-import Firebase from "./Pages/FirebasePage";
 
 function App() {
   const [userList, setUserList] = React.useState(null);
@@ -41,7 +40,6 @@ function App() {
                   element={<AllUserList userList={userList} />}
                 />
                 <Route path="/about" element={<About />} />
-                <Route path="/firebase" element={<Firebase />} />
                 <Route path="/users/:id" element={<UserPage />} />
                 <Route path="*" element={<ErrorPage />} />
               </Routes>
@@ -54,5 +52,3 @@ function App() {
 }
 
 export default App;
-// Realizati o aplicatie mobila ce va calcula indicele masei corporale
-//axexandru.stamatin.it.utm.md
