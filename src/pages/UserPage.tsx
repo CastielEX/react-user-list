@@ -5,11 +5,12 @@ import { getUsers } from "../Services/ServiceData";
 import { getTasks } from "../Services/ServiceData";
 import FilterTaskList from "../Components/DropDownList";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { removeTask } from "../redux/taskSlice";
 
 function UserPage(this: any) {
   const { id, userId, task } = useParams();
-  const [userList, setUserList] = useLocalStorage("userList", {}); //useLocalStorage("userList", {}); // React.useState<any>({});
-  const [taskList, setTaskList] = useLocalStorage("taskList", []); //useLocalStorage("taskList", []); // React.useState<any>([]);
+  const [userList, setUserList] = React.useState<any>({}); //useLocalStorage("userList", {}); // React.useState<any>({});
+  const [taskList, setTaskList] = React.useState<any>([]); //useLocalStorage("taskList", []); // React.useState<any>([]);
   const [searchTaskText, setTaskText] = useState("");
   const [checked, setChecked] = useState(taskList.completed);
   const [filterTextValue, setfilterTextValue] = useState("all");
@@ -106,7 +107,7 @@ function UserPage(this: any) {
             })
             .map((task: any) => {
               return (
-                <div className="border-2 border-neutral-600 py-2 px-4 rounded flex flex-col items-center mb-2">
+                <div className="border-2 border-neutral-600 py-2 px-4 rounded flex flex-col mb-2">
                   <div>
                     <input
                       key={id}
@@ -118,12 +119,14 @@ function UserPage(this: any) {
                     />
                     {task?.userId}
                     {" - "} {task?.title}
-                    <button
-                      className="ml-3 px-1 border bg-gray-500 rounded "
-                      onClick={() => removeTask(task.id)}
-                    >
-                      Delete
-                    </button>
+                    <div>
+                      <button
+                        className="ml-3 px-2 mt-1 border text-center bg-gray-500 rounded"
+                        onClick={() => removeTask(task.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
