@@ -5,10 +5,10 @@ import { getUsers } from "../Services/ServiceData";
 import { getTasks } from "../Services/ServiceData";
 import FilterTaskList from "../Components/DropDownList";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { removeTask } from "../redux/taskSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function UserPage(this: any) {
-  const { id, userId, task } = useParams();
+  const { id, userId } = useParams();
   const [userList, setUserList] = React.useState<any>({}); //useLocalStorage("userList", {}); // React.useState<any>({});
   const [taskList, setTaskList] = React.useState<any>([]); //useLocalStorage("taskList", []); // React.useState<any>([]);
   const [searchTaskText, setTaskText] = useState("");
@@ -138,5 +138,3 @@ function UserPage(this: any) {
 }
 
 export default UserPage;
-
-// Sa nu salvez in LocalStorage dar in JSON

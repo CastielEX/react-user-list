@@ -1,20 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useEffect } from "react";
-import { getUsers } from "../Services/ServiceData";
 
 const taskSlice = createSlice({
-  name: "task",
+  name: "todos",
   initialState: {
-    task: [],
+    todos: [],
   },
   reducers: {
-    removeTask(state, action) {
-      state.task = state.task.filter(
-        (task: any) => task.id !== action.payload.id
+    addTask(state: any, action: any) {
+      state.todos.push({
+        id: new Date().toISOString(),
+        text: action.payload.text,
+        completed: false,
+      });
+    },
+    toggleComplete(state: any, action: any) {
+      const toggledTask = state.todos.find(
+        (todo: any) => todo.id === action.payload.id
+      );
+      toggledTask.completed = !toggledTask.completed;
+    },
+    removeTask(state: any, action: any) {
+      state.todos = state.todos.filter(
+        (todo: any) => todo.id !== action.payload.id
       );
     },
   },
 });
 
-export const { removeTask } = taskSlice.actions;
+export const { addTask, toggleComplete, removeTask } = taskSlice.actions;
+
 export default taskSlice.reducer;

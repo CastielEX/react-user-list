@@ -15,15 +15,12 @@ function App() {
   const [userList, setUserList] = React.useState(null);
 
   const usersURL = "https://jsonplaceholder.typicode.com/users";
-  // Getting User Data
   React.useEffect(() => {
     axios.get(usersURL).then((response) => {
       setUserList(response.data);
     });
   }, []);
-  // Sa pun axios get in file aparte Service
   if (!userList) return null;
-  //
 
   return (
     <Router>
